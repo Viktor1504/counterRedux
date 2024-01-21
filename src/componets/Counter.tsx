@@ -1,77 +1,70 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import {Button} from './button/Button';
 import '../App.css';
 import Input from './input/Input';
 import s from './Counter.module.css'
+import {useDispatch, useSelector} from 'react-redux';
+import {AppRootStateType} from '../state/store';
+import {
+    addCounterAC,
+    changeMaxInputAC,
+    changeShowSettingsAC,
+    changeStartInputAC,
+    InitialStateType,
+    resetCounterAC
+} from '../state/counterReducer';
 
 export const Counter = () => {
-    const [count, setCount] = useState<number>(0)
-    const [startValue, setStartValue] = useState<number>(0)
-    const [maxValue, setMaxValue] = useState<number>(5)
-    const [showSettings, setShowSettings] = useState<boolean>(false)
 
-    useEffect(() => {
-        const savedStartValue = localStorage.getItem('startValue');
-        const savedMaxValue = localStorage.getItem('maxValue');
+    const counter = useSelector<AppRootStateType, InitialStateType>(state => state.counter)
 
-        if (savedStartValue && savedMaxValue) {
-            setStartValue(JSON.parse(savedStartValue));
-            setMaxValue(JSON.parse(savedMaxValue));
-            setCount(JSON.parse(savedStartValue))
-        }
-    }, []);
+    const dispatch = useDispatch()
 
-    useEffect(() => {
-        localStorage.setItem('startValue', JSON.stringify(startValue));
-        localStorage.setItem('maxValue', JSON.stringify(maxValue));
-    }, [startValue, maxValue]);
+    const onClickAddCounter = () => dispatch(addCounterAC())
 
-    const onClickAddCounter = () => {
-        setCount(count < maxValue ? count + 1 : count);
-    }
-    const onClickResetCounter = () => {
-        setCount(startValue < 0 ? 0 : startValue);
-    }
+
+    const onClickResetCounter = () => dispatch(resetCounterAC())
+
     const onChangeStartInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setStartValue(+e.currentTarget.value)
+        dispatch(changeStartInputAC(+e.currentTarget.value))
     }
 
     const onChangeMaxInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setMaxValue(+e.currentTarget.value)
+        dispatch(changeMaxInputAC(+e.currentTarget.value))
     }
 
     const onClickSettingsHandler = () => {
-        setShowSettings(!showSettings)
-        setCount(startValue < 0 ? 0 : startValue)
+        dispatch(changeShowSettingsAC())
     }
 
-    const disableState = startValue >= maxValue || maxValue < 0 || startValue < 0
+    const disableState = counter.startValue >= counter.maxValue || counter.maxValue < 0 || counter.startValue < 0
 
 
     return <div className={s.main}>
         <div className={s.mainDisplay}>
-            {showSettings ? <>
-                    <Input className={maxValue < 0 || startValue === maxValue ? s.inputMistake : ''}
+            {counter.showSettings ? <>
+                    <Input className={counter.maxValue < 0 || counter.startValue === counter.maxValue ? s.inputMistake : ''}
                            title={'max value:'}
-                           stateValue={maxValue}
+                           stateValue={counter.maxValue}
                            onChange={onChangeMaxInputHandler}/>
 
                     <Input
-                        className={startValue < 0 || startValue >= maxValue ? s.inputMistake : ''}
+                        className={counter.startValue < 0 || counter.startValue >= counter.maxValue ? s.inputMistake : ''}
                         title={'start value:'}
-                        stateValue={startValue}
+                        stateValue={counter.startValue}
                         onChange={onChangeStartInputHandler}/>
                 </> :
-                <span className={count === maxValue ? s.redSpan : ''}>{count}</span>
+                <span className={counter.count === counter.maxValue ? s.redSpan : ''}>{counter.count}</span>
             }
         </div>
         <div className={s.buttons}>
-            {showSettings ?
+            {counter.showSettings ?
                 <Button title={'set'} btnClick={onClickSettingsHandler} disabled={disableState}/>
                 :
                 <>
-                    <Button title={'inc'} btnClick={onClickAddCounter} disabled={count === maxValue}/>
-                    <Button title={'reset'} btnClick={onClickResetCounter} disabled={startValue === count}/>
+                    <Button title={'inc'} btnClick={onClickAddCounter} disabled={counter.count === counter.maxValue}/>
+                    <Button title={'reset'} btnClick={onClickResetCounter}
+                            disabled={counter.startValue === counter.count}/>
                     <Button title={'set'} btnClick={onClickSettingsHandler} disabled={false}/>
                 </>
             }

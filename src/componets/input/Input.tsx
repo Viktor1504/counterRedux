@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, memo} from 'react';
 import s from './Input.module.css'
 
 type InputPropsType = {
@@ -8,7 +8,7 @@ type InputPropsType = {
     className: string
 }
 
-const Input: React.FC<InputPropsType> = (props) => {
+const Input: React.FC<InputPropsType> = memo((props) => {
 
     return <div className={s.div}>
         <label className={s.label}>{props.title}</label>
@@ -18,6 +18,6 @@ const Input: React.FC<InputPropsType> = (props) => {
                value={props.stateValue}
                onChange={props.onChange}/>
     </div>
-}
+})
 
 export default Input;

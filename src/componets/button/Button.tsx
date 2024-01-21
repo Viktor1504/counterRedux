@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {memo} from 'react';
 
 type ButtonPropsType = {
     title: string
     btnClick: () => void
     disabled: boolean
 }
-export const Button: React.FC<ButtonPropsType> = (props) => {
+export const Button: React.FC<ButtonPropsType> = memo((props) => {
     return <div>
         <button
             disabled={props.disabled}
@@ -13,4 +13,4 @@ export const Button: React.FC<ButtonPropsType> = (props) => {
             {props.title}
         </button>
     </div>
-}
+})
