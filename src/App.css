@@ -5,3 +5,46 @@
     background-color: darkslateblue;
     height: 100vh;
 }
+
+.main {
+    border: 2px solid #00e1ff;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.mainDisplay {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+    border: 2px solid #00e1ff;
+    padding: 20px;
+    margin: 20px;
+    font-size: 30px;
+    border-radius: 10px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    border: 2px solid #00e1ff;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+}
+
+.buttons button {
+    font-size: 40px;
+    border-radius: 10px;
+}
+
+.redSpan {
+    color: red;
+}
+
+.inputMistake {
+    border: 1px solid red;
+    background-color: #dc7474;
+    opacity: 0.5;
+}
