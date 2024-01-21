@@ -1,0 +1,16 @@
+.div {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.label {
+    box-sizing: border-box;
+}
+
+.input {
+    box-sizing: border-box;
+    text-align: center;
+    border: 1px solid #cecece;
+    border-radius: 4px;
+}
